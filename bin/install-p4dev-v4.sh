@@ -281,10 +281,11 @@ move_usr_local_lib_python3_from_site_packages_to_dist_packages() {
 	    ls -l ${SRC_DIR}/$k
 	    echo "Dest dir $k directory contents:"
 	    ls -l ${DST_DIR}/$k
-            sudo mv ${SRC_DIR}/$k/* ${DST_DIR}/$k/
-	    sudo rmdir ${SRC_DIR}/$k
-	else
-	    echo "Not a conflicting directory: $k"
+            # sudo mv ${SRC_DIR}/$k/* ${DST_DIR}/$k/ # a bug of moving non-empty directory
+            sudo rsync -a ${SRC_DIR}/$k/ ${DST_DIR}/$k/
+        sudo rm -r ${SRC_DIR}/$k
+    else
+        echo "Not a conflicting directory: $k"
             sudo mv ${SRC_DIR}/$k ${DST_DIR}/$k
 	fi
     done
